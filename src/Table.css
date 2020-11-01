@@ -15,6 +15,8 @@
     flex-direction: column;
 } 
 
+
+
 .table  tr{
     display: flex;
     flex-direction: row;
@@ -24,8 +26,16 @@
 
 .table td{
     padding: 0.5rem;
+    flex: 1;
+    text-align: center;
+}
+
+.table__header td{
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .table  tr:nth-of-type(odd){
     background-color: #f3f2f8;
 }
+

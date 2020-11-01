@@ -21,11 +21,42 @@ body{
 
 .app__left{
   flex: 0.9;
+  
 }
 
+.app__right{
+  
+  display: flex;
+  flex-direction: column;
+ 
+  
+}
+
+.app__right .MuiCardContent-root{
+  
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  
+}
 .app__stats{
   display: flex;
   justify-content: space-between;
+}
+
+.app__graph{
+  flex-grow: 1;
+}
+
+canvas{
+
+  width:100% !important;
+  height:100% !important;
+
+}
+
+.app__graph_header{
+  padding: 10px 0px;
 }
 
 @media (max-width: 990px){

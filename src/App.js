@@ -4,7 +4,7 @@ import { FormControl, MenuItem, Select, Card, CardContent } from "@material-ui/c
 import InfoBox from "./InfoBox.js";
 import Map from "./Map.js";
 import Table from "./Table.js";
-import { sortData, prettifyStat } from "./util.js";
+import { sortData, capitalize, prettifyStat } from "./util.js";
 import LineGraph from "./LIneGraph.js";
 import "leaflet/dist/leaflet.css";
 
@@ -70,6 +70,8 @@ function App() {
   return (
     <div className="app">
       <div className="app__left">
+      
+
         <div className="app__header">
           <h1>COVID-19 Tracker</h1>
           <FormControl className="app__dropdown">
@@ -78,7 +80,7 @@ function App() {
               value={country}
               onChange={onCountryChange}
             >
-              <MenuItem key="0" value="worldwide">Worldwide</MenuItem>
+              <MenuItem key="worldwide" value="worldwide">Worldwide</MenuItem>
               {
                 countries.map((country, index) => (<MenuItem key={index} value={country.value}>{country.name}</MenuItem>))
               }
@@ -117,14 +119,16 @@ function App() {
         </div>    
         <Map countries={mapCountries} center={mapCenter} zoomLevel = {zoomLevel} casesType={casesType}></Map>
       </div>
-      <Card className="app__right">
-        <CardContent>
-          <h3>Live Cases by Country</h3>
-          <Table countries={tabledata} />
-          <h3>Worldwide new {casesType}</h3>
-          <LineGraph casesType={casesType}/>
-        </CardContent>
-      </Card>    
+      
+        <Card className="app__right">
+          <CardContent>
+            <h3>{capitalize(casesType)} by Country</h3>
+            <Table countries={tabledata} casesType = {casesType} />
+            <h3 className={"app__graph_header"}> Historical {capitalize(casesType)} -- {country}</h3>
+            <LineGraph casesType={casesType} country={country} className={"app__graph"}/>
+          </CardContent>
+        </Card> 
+      
     </div>
   );
 }

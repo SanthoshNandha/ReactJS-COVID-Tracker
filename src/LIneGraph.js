@@ -3,6 +3,21 @@ import "./LineGraph.css";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 
+const casesTypeColors = {
+    cases: {
+      color:"blue",
+      
+    },
+    recovered: {
+      color:"green",
+      
+    },
+    deaths: {
+      color:"red",
+     
+    },
+  };
+
 const options = { 
     legend:{
         display:false,
@@ -13,6 +28,7 @@ const options = {
         },
     },
     maintainAspectRation: false,
+    responsive: true,
     tooltip:{
         mode:"index",
         intersect:false,
@@ -50,7 +66,9 @@ const options = {
 const buildChartData = (data, casesTypes="cases") => {
     const chartData = [];
     let lastDataPoint;
-    let cases = data[casesTypes]
+    let cases = data["timeline"] ? data["timeline"][casesTypes]: data[casesTypes];
+
+    
     Object.keys(cases).forEach( date => {
         if(lastDataPoint){
             const newDataPoint = {
@@ -64,14 +82,20 @@ const buildChartData = (data, casesTypes="cases") => {
     return chartData;
 }
 
-export default function LineGraph({ casesType }) {
+export default function LineGraph({ casesType, country, className }) {
 
     const [data, setData] = useState([]);
 
-    useEffect(() => {
+    useEffect(() => {       
+
+        const url = country === "worldwide" ? "https://disease.sh/v3/covid-19/historical/all?lastdays=120" : 
+        `https://disease.sh/v3/covid-19/historical/${country}?lastdays=120`
+
+       
         const fetchData = async () => {
-            await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+            await fetch(url)
             .then(response => {
+                
                 return response.json()
             })
             .then((data) => {
@@ -81,16 +105,16 @@ export default function LineGraph({ casesType }) {
         }
         fetchData();
         
-    }, [casesType]);  
+    }, [casesType, country]);  
 
     return (
-        <div>
+        <div className={className}>
             <Line
                 data = {{
                     datasets:[
                         {
-                            backgroundColor:"rgba(204, 16, 52, 0.5)",
-                            borderColor:"#CC1034",
+                            backgroundColor:"gray",
+                            borderColor:casesTypeColors[casesType].color,
                             data:data,
 
                         }

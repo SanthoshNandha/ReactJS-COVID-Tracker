@@ -33,6 +33,7 @@ const showDataOnMap = (data, casesType="cases") => {
 
     return data.map(country => (
         <Circle
+            key={country.country}
             center={[country.countryInfo.lat, country.countryInfo.long]}
             fillOpacity={0.4}
             color={casesTypeColors[casesType].color}
